@@ -1,4 +1,5 @@
 project('pevents', ['cpp'],
+		version : '1.22.11',
 		default_options: ['warning_level=3', 'cpp_std=c++11'])
 
 args = []
@@ -14,9 +15,12 @@ incdir = include_directories('src/')
 
 srcs = ['src/pevents.cpp']
 # pevents = both_libraries('pevents', srcs,
-pevents = static_library('pevents', srcs,
+# pevents = static_library('pevents', srcs,
+pevents = shared_library('pevents', srcs,
 	cpp_args: args,
-	dependencies: [pthreads])
+	dependencies: [pthreads],
+	version : meson.project_version(),
+	install: true)
 
 pevents = declare_dependency(
 	include_directories: include_directories('.'),
@@ -91,3 +95,5 @@ add_test_setup('valgrind',
 		is_default: valgrind.found(),
 		timeout_multiplier: 1
 )
+
+install_headers('src/pevents.h')
